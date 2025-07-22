@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity // Indica que esta classe é uma entidade JPA e será mapeada para uma tabela no banco de dados.
@@ -15,7 +16,7 @@ public class User {
     public interface CreateUser{} // Grupo de validação para a criação de um usuário.
     public interface UpdateUser{} // Grupo de validação para a atualização de um usuário.
 
-    public static final String TABLE_NAME = "user";
+    public static final String TABLE_NAME = "users";
 
     @Id // Marca o campo 'id' como a chave primária da tabela.
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Define que o 'id' será gerado automaticamente pelo banco de dados (auto-incremento).
@@ -35,7 +36,8 @@ public class User {
     @Size(groups = {CreateUser.class, UpdateUser.class} , min = 8, max = 60) // Define o tamanho mínimo e máximo para 'password' ao criar ou atualizar.
     private String password;
 
-    //private List<task> = new ArrayList<Task>();
+    @OneToMany(mappedBy = "user")
+    private List<Task> task = new ArrayList<Task>();
 
     public User(){
 
@@ -71,11 +73,30 @@ public class User {
         this.password = password;
     }
 
+    public List<Task> getTask() {
+        return task;
+    }
+
+    public void setTask(List<Task> task) {
+        this.task = task;
+    }
+
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null || getClass() != obj.getClass()) return false;
-        User user = (User) obj;
-        return Objects.equals(id, user.id) && Objects.equals(UserName, user.UserName) && Objects.equals(password, user.password);
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (o == null)
+            return false;
+        if (!(o instanceof User))
+            return false;
+        User other = (User) o;
+        if (this.id == null)
+            if (other.id != null)
+                return false;
+            else if (!this.id.equals(other.id))
+                return false;
+        return Objects.equals(this.id, other.id) && Objects.equals(this.UserName, other.UserName)
+                && Objects.equals(this.password, other.password);
     }
 
     @Override
