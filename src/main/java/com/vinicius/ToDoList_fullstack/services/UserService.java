@@ -1,7 +1,6 @@
 package com.vinicius.ToDoList_fullstack.services;
 
 import com.vinicius.ToDoList_fullstack.models.User;
-import com.vinicius.ToDoList_fullstack.repositories.TaskRepository;
 import com.vinicius.ToDoList_fullstack.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,6 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private TaskRepository taskRepository;
 
     public User findById( Long id) {
         Optional<User> user = this.userRepository.findById(id);
@@ -31,7 +27,6 @@ public class UserService {
     public User create(User obj){
         obj.setId(null);
         obj = this.userRepository.save(obj);
-        this.taskRepository.saveAll(obj.getTask());
         return obj;
     }
 
