@@ -1,5 +1,6 @@
 package com.vinicius.ToDoList_fullstack.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -73,6 +74,7 @@ public class User {
         this.password = password;
     }
 
+    @JsonIgnore //não quero que apareça todas as tasks no JSON, apenas as que eu pedir
     public List<Task> getTask() {
         return task;
     }
