@@ -2,6 +2,7 @@ package com.vinicius.ToDoList_fullstack.controllers;
 
 import com.vinicius.ToDoList_fullstack.models.Task;
 import com.vinicius.ToDoList_fullstack.services.TaskService;
+import com.vinicius.ToDoList_fullstack.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,11 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/{id}")
-    public ResponseEntity<Task> findByIs(@PathVariable Long id){
+    public ResponseEntity<Task> findById(@PathVariable Long id){
         Task obj = this.taskService.findById(id);
 
         return ResponseEntity.ok(obj);
@@ -59,6 +63,7 @@ public class TaskController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Task>> findAllByUserId(@PathVariable Long userId){
+        this.userService.findById(userId);
         List<Task> objs = this.taskService.findAllByUserId(userId);
 
         return ResponseEntity.ok().body(objs);
