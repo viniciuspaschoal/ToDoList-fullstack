@@ -33,7 +33,7 @@ public class TaskController {
 
     @PostMapping
     @Validated
-    public ResponseEntity<Void> create(@Valid @RequestBody Task obj){
+    public ResponseEntity<Task> create(@Valid @RequestBody Task obj){
 
         this.taskService.create(obj);
         URI uri = ServletUriComponentsBuilder
@@ -42,7 +42,7 @@ public class TaskController {
                 .buildAndExpand(obj.getId())
                 .toUri();
 
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(obj);
     }
 
     @PutMapping("/{id}")
